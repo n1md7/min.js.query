@@ -7,66 +7,10 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-function Element(parent){
-	parent = (typeof parent === 'object') ? parent : document.querySelector(parent)
-	this.element = parent
-	var style = this.element.getAttribute('style') || ''
-	this.toogled = false
-
-	this.create = function(element){
-		this.element = document.createElement(element)
-		parent.appendChild(this.element)
-		return this
-	}
-	this.css = function(styles){
-		for(var st in styles){
-			style += st+":"+styles[st]+";"
-		}
-		this.element.setAttribute("style", style)
-		return this
-	}
-	this.attr = function(attr, val = null){
-		if(val === null)
-			return this.element.getAttribute(attr) || ''
-		this.element.setAttribute(attr, val)
-		return this
-	}
-	this.on = function(evnt, func){
-		this.element.addEventListener(evnt, func)
-		return this
-	}
-	this.delete = function(){
-		parent.parentNode.removeChild(parent)
-		return this
-	}
-	this.html = function(html = null){
-		if(html === null)
-			return this.element.innerHTML || ''
-		this.element.innerHTML += (html instanceof Array) ? html.join('') : html
-		return this
-	}
-	this.val = function(val = null){
-		if(val === null)
-			return this.element.value || ''
-		this.element.value = val
-		return this
-	}
-}
-function find(val){
-	return new Element(val)
-}
-</script>
+<script type="text/javascript" src="mini.js.query.js"></script>
 <body>
 <script type="text/javascript">
-	var body = find('body').html([
-		'<div class="jumbotron text-center">',
-		  '<h1>Bootstrap Page With My Beautiful JS <code>CODE</code></h1>',
-		  '<p>Resize this responsive page to see the effect!</p>', 
-		'</div>'
-	]).element
-
-	var navbar = find(body).html([
+	var navbar = find('body').html([
 		'<nav class="navbar navbar-default">',
 		  '<div class="container-fluid">',
 		    '<div class="navbar-header">',
@@ -80,9 +24,45 @@ function find(val){
 		    '</ul>',
 		  '</div>',
 		'</nav>'
-	]).element
+	])
+	var body = find('body').html([
+		'<div class="jumbotron text-center">',
+		  '<h1>Bootstrap Page With My Beautiful JS <code>CODE</code></h1>',
+		  '<p>Resize this responsive page to see the effect!</p>', 
+		'</div>'
+	])
 
-	var container = find(body).create('div').attr('class', 'container-fluid')
+
+	var container = find('body').create('div').attr('class', 'container-fluid').css({position:'relative'})
+
+	var mainCss = {
+		'position':'absolute',
+		'width': '100px',
+		'left': '0px',
+		'box-sizing':'border-box',
+		'text-align':'center',
+		'cursor':'pointer',
+		'padding':'40px 0px 40px 0px',
+		'transition': 'all 1s'
+	}
+	 
+	var left = true
+	var array = [2,3,4,5,6,7,8,9]
+	array.forEach(function(element, index){
+		find(container.element)
+		.create('div')
+		.on('click', function(){
+			left?find(this).css({left:window.innerWidth-120+'px'}):find(this).css({left:0})
+			left=left?false:true
+		})
+		.css(mainCss)
+		.html('Click Me')
+		.css({
+			'top':index*100+10+'px',
+			'background-color': 'rgba(255,0,0,0.'+index+')',
+		})		
+	})
+
 </script>
 </body>
 </html>
